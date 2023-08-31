@@ -10,12 +10,12 @@ for m in request_methods:
         if m != "GET":
             response = method(
                 "https://playground.learnqa.ru/ajax/api/compare_query_type",
-                data=p
+                data={"method": p}
             )
             print(response.text)
         else:
             response = method(
                 "https://playground.learnqa.ru/ajax/api/compare_query_type",
-                params=p
+                params={"method": p}
             )
             print(response.text)
