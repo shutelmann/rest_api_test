@@ -1,21 +1,22 @@
 import requests
+from time import sleep
 
-request_params = ["GET", "POST", "PUT", "DELETE"]
+response1 = requests.get(
+    "https://playground.learnqa.ru/ajax/api/longtime_job"
+)
+json_parcing = response1.json()
+token = json_parcing["token"]
+time = json_parcing["seconds"]
 
-request_methods = ["get", "post", "put", "delete"]
+sleep(int(time))
 
-for m in request_methods:
-    method = getattr(requests, m)
-    for p in request_params:
-        if m != "GET":
-            response = method(
-                "https://playground.learnqa.ru/ajax/api/compare_query_type",
-                data={"method": p}
-            )
-            print(response.text)
-        else:
-            response = method(
-                "https://playground.learnqa.ru/ajax/api/compare_query_type",
-                params={"method": p}
-            )
-            print(response.text)
+response2 = requests.get(
+    "https://playground.learnqa.ru/ajax/api/longtime_job",
+    params={"token": token}
+)
+
+json_parcing = response2.json()
+status = json_parcing["status"]
+
+if status == "Job is ready":
+    print(json_parcing["result"])
