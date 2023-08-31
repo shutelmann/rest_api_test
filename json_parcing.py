@@ -1,11 +1,22 @@
 import json
 
-string_to_format = '{"answer": "shutelmann"}'
+string_to_format = '''
+{
+  "messages": [
+    {
+      "message": "This is the first message",
+      "timestamp": "2021-06-04 16:40:53"
+    },
+    {
+      "message": "And this is a second message",
+      "timestamp": "2021-06-04 16:41:01"
+    }
+  ]
+}
+'''
+
 json_obj = json.loads(string_to_format)
 
-key = "answer"
+catch_json = json_obj["messages"]
 
-if key in json_obj:
-    print(json_obj[key])
-else:
-    print(f"Ключа с названием {key} не в JSON файле.")
+print(catch_json[1])

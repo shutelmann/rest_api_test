@@ -1,19 +1,21 @@
-from json import JSONDecodeError
 import requests
 
-payload = {
-    "name": "shutelmann"
-}
+request_params = ["GET", "POST", "PUT", "DELETE"]
 
-response = requests.get(
-    "https://playground.learnqa.ru/api/get_text",
-    params=payload
-)
+request_methods = ["get", "post", "put", "delete"]
 
-print(response.text)
-
-try:
-    parsed_response_json = response.json()
-    print(parsed_response_json["answer"])
-except JSONDecodeError:
-    print("Ответ сервера не содержит JSON.")
+for m in request_methods:
+    method = getattr(requests, m)
+    for p in request_params:
+        if m != "GET":
+            response = method(
+                "https://playground.learnqa.ru/ajax/api/compare_query_type",
+                data=p
+            )
+            print(response.text)
+        else:
+            response = method(
+                "https://playground.learnqa.ru/ajax/api/compare_query_type",
+                params=p
+            )
+            print(response.text)
