@@ -1,6 +1,7 @@
 import requests
 import pytest
 from base_case import BaseCase
+from assertions import Assertions
 
 
 class TestUserAuth(BaseCase):
@@ -31,10 +32,12 @@ class TestUserAuth(BaseCase):
             cookies={"auth_sid": self.auth_sid}
         )
 
-        assert "user_id" in response2.json(), "В ответе от сервера нет поля user_id"
-        user_id_from_check = response2.json()["user_id"]
-
-        assert self.user_id_from_auth == user_id_from_check, "Идентификатор пользователя после авторизации и после провверки авторизации не совпадают"
+        Assertions.assert_json_by_value(
+            response2,
+            "user_id",
+            self.user_id_from_auth,
+            "Идентификатор пользователя после авторизации и после провверки авторизации не совпадают"
+        )
 
     @pytest.mark.parametrize("condition", exluded_params)
     def test_negative_auth_check(self, condition):
@@ -49,7 +52,9 @@ class TestUserAuth(BaseCase):
             cookies={"auth_sid": self.auth_sid}
         )
 
-        assert "user_id" in response2.json()
-        user_id = response2.json()["user_id"]
-
-        assert user_id == 0, "Неавторизованный пользователь прошёл проверку сервера"
+        Assertions.assert_json_by_value(
+            response2,
+            "user_id",
+            0,
+            "Неавторизованный пользователь прошёл проверку сервера."
+        )

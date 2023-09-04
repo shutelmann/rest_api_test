@@ -1,5 +1,5 @@
 from requests import Response
-import json.decoder
+import json
 
 
 class BaseCase:
@@ -15,6 +15,6 @@ class BaseCase:
         try:
             json_to_dict = response.json()
         except json.JSONDecodeError:
-            assert False, f"Ответ от сервера не в формате JSON.\n'{response.text}'"
+            assert False, f"Ответ от сервера не является JSON файлом.\n'{response.text}'"
         assert json_key in json_to_dict, f"В ответе от сервера нет ключа с названием '{json_key}'"
         return json_to_dict[json_key]
