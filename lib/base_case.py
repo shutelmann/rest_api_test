@@ -1,5 +1,6 @@
 from requests import Response
 import json
+from datetime import datetime
 
 
 class BaseCase:
@@ -18,3 +19,15 @@ class BaseCase:
             assert False, f"Ответ от сервера не является JSON файлом.\n'{response.text}'"
         assert json_key in json_to_dict, f"В ответе от сервера нет ключа с названием '{json_key}'"
         return json_to_dict[json_key]
+
+    def prepare_registration_data(self, email=None):
+        if email == None:
+            random_part = datetime.now().strftime("%m%d%Y%H%M%S")
+            email = f"learnqa{random_part}@example.com"
+        return {
+            "username": "learnqa",
+            "password": "1234",
+            "firstName": "learnqa",
+            "lastName": "learnqa",
+            "email": email
+        }

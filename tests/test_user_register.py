@@ -1,22 +1,11 @@
 import requests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
-from datetime import datetime
 
 
 class TestUserRegister(BaseCase):
-    def setup_method(self):
-        random_part = datetime.now().strftime("%m%d%Y%H%M%S")
-        self.email = f"learnqa{random_part}@example.com"
-
     def test_create_new_user(self):
-        data = {
-            "username": "learnqa",
-            "password": "123",
-            "firstName": "learnqa",
-            "lastName": "learnqa",
-            "email": self.email
-        }
+        data = self.prepare_registration_data()
 
         response = requests.post(
             "https://playground.learnqa.ru/api/user/",
@@ -28,13 +17,7 @@ class TestUserRegister(BaseCase):
 
     def test_user_with_exsiting_email(self):
         email = "vinkotov@example.com"
-        data = {
-            "username": "learnqa",
-            "password": "123",
-            "firstName": "learnqa",
-            "lastName": "learnqa",
-            "email": email
-        }
+        data = self.prepare_registration_data(email)
         response = requests.post(
             "https://playground.learnqa.ru/api/user/",
             data=data
@@ -43,4 +26,3 @@ class TestUserRegister(BaseCase):
         Assertions.assert_code_status(response, 400)
         assert response.content.decode(
             "utf-8") == f"Users with email '{email}' already exists", f"Неожиданный ответ сервера: {response.content}"
-        print(f'\n{response.status_code}, \n{response.content}')

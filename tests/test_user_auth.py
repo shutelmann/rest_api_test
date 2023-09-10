@@ -1,4 +1,4 @@
-import requests
+from lib.my_requests import My
 import pytest
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
